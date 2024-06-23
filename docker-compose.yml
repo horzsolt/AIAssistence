@@ -1,0 +1,31 @@
+version: '3.6'
+services:
+  backend:
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}  
+    build: 
+      context: ./
+      target:  appRuntime
+    image: horzsolt/etalondemo-back
+    container_name: ai-backend
+    ports:
+      - 8090:8090
+    networks:
+      - backnet
+
+  frontend:
+    build: ./vue-app
+    image: horzsolt/etalondemo-front
+    container_name: ai-frontend
+    ports:
+      - 8080:8080
+    depends_on:
+      - backend
+    networks: 
+      - frontnet
+  
+networks: 
+  backnet:
+    driver: bridge
+  frontnet:
+    driver: bridge
